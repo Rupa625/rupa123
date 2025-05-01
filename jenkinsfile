@@ -1,0 +1,32 @@
+pipeline {
+       agent any
+
+       tools {
+          maven 'local maven'
+          jdk'localjdk'
+}
+environment {
+      fname = "Rupa"
+      lname = "Mishra"
+      version = "1.2"
+      system = "Test"
+}
+
+stage {
+    stage ('build') {
+      steps {
+       sh 'mvn clean package'
+      }
+     post{
+      success {
+         echo 'Archiving the artifacts'
+         archiveArtifacts artifacts: '**/targets/*.war'
+           }
+       }
+}
+      stage ( 'Depoy to staging1')
+           steps {
+               echo 'This is just a demo on staging1 server.'
+      }
+  }
+}
